@@ -1,0 +1,31 @@
+.font-serif { font-family: 'Playfair Display', serif; }
+.font-sans { font-family: 'Instrument Sans', sans-serif; }
+
+/* Custom Animation Keyframes */
+@keyframes spinSplitLeft {
+    0% { opacity: 0; transform: translateX(100%) rotate(180deg) scale(0.1); filter: blur(20px); }
+    20% { opacity: 1; }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); filter: blur(0px); }
+}
+@keyframes spinSplitRight {
+    0% { opacity: 0; transform: translateX(-100%) rotate(-180deg) scale(0.1); filter: blur(20px); }
+    20% { opacity: 1; }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); filter: blur(0px); }
+}
+
+.animate-spin-split-left {
+    animation: spinSplitLeft 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-spin-split-right {
+    animation: spinSplitRight 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
