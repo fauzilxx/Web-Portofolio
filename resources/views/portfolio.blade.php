@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fauzil's Portfolio</title>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-
-    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <!-- Custom CSS with cache busting -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}?v={{ time() }}">
 </head>
 <body class="bg-[#0A1014] text-gray-300 font-sans antialiased selection:bg-[#32BAD6] selection:text-white">
@@ -54,25 +50,17 @@
                 <!-- CTAs -->
                 <div class="mt-8 flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">
                     <a href="#work" class="px-8 py-3.5 bg-[#32BAD6] text-[#05090B] font-semibold rounded-full hover:bg-[#2aa0b9] transition duration-300 w-full sm:w-auto text-center">
-                        View Selected Works
-                    </a>
-                    <a href="#" class="flex items-center gap-2 text-white hover:text-[#32BAD6] transition font-medium">
                         Download CV
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
                     </a>
+
                 </div>
             </div>
 
             <!-- Right Column: Image -->
             <div class="flex justify-center md:justify-end relative z-10 opacity-0 animate-spin-split-right">
-                <!-- Abstract Glow Effect -->
                 <div class="absolute inset-0 bg-gradient-to-tr from-[#32BAD6]/20 to-purple-500/20 blur-[80px] rounded-full scale-90"></div>
-                
-                <!-- Image Container -->
                 <div class="relative w-full max-w-sm aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#151C21]">
-                     <img src="images/Picture_Profile.png" alt="Profile Picture" class="w-full h-full object-cover" style="object-fit: cover; width: 100%; height: 100%;">
+                <img src="images/Picture_Profile.png" alt="Profile Picture" class="w-full h-full object-cover" style="object-fit: cover; width: 100%; height: 100%;">
                 </div>
             </div>
 
@@ -93,148 +81,95 @@
 
         <div id="tech-scroll-container" class="flex overflow-x-scroll no-scrollbar cursor-grab active:cursor-grabbing items-center" style="scroll-behavior: auto;">
             <div id="tech-track" class="flex items-center gap-16 px-10">
-                <!-- Content will be duplicated by JS -->
-                <!-- Original Set -->
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg" class="w-10 h-10 pointer-events-none" alt="Laravel">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" class="w-10 h-10 pointer-events-none" alt="Tailwind">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg" class="w-10 h-10 pointer-events-none" alt="PHP">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://labs.mysql.com/common/logos/mysql-logo.svg" class="w-10 h-10 pointer-events-none" alt="MySQL">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" class="w-10 h-10 pointer-events-none" alt="React">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://nodejs.org/static/images/logo.svg" class="w-10 h-10 bg-white/10 rounded px-1 pointer-events-none" alt="Node.js">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" class="w-10 h-10 pointer-events-none" alt="Python">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg" class="w-10 h-10 pointer-events-none" alt="Java">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg" class="w-13 h-13 pointer-events-none" alt="Git">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
                 <div class="tech-item flex items-center gap-3 shrink-0 select-none">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" class="w-10 h-10 pointer-events-none" alt="C">
-                    <span class="font-bold text-xl text-white pointer-events-none"></span>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Selected Works -->
     <section id="work" class="py-32 bg-[#0A1014]">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-end mb-16">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-serif text-white mb-4">Selected Works</h2>
-                    <p class="text-gray-400 max-w-sm">A curation of digital products designed and developed between 2021 and 2024.</p>
+                    <h2 class="text-4xl md:text-5xl font-serif text-white mb-4">My Projects</h2>
+                    <p class="text-gray-400 max-w-sm">A collection of my recent work</p>
                 </div>
                 <a href="#" class="hidden md:inline-block text-xs font-bold tracking-widest text-[#32BAD6] uppercase hover:underline">View Archive</a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-20">
-                <!-- Project 1 -->
-                <article class="group cursor-pointer">
-                    <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
-                         <!-- Abstract 3D shape placeholder similar to image -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#2a353c] to-[#121619] flex items-center justify-center group-hover:scale-105 transition duration-700">
-                           <div class="w-32 h-32 md:w-48 md:h-48 bg-[#C8B6A6] rounded-full mix-blend-overlay blur-3xl opacity-20"></div>
-                           <div class="w-32 h-64 bg-[#C8B6A6] rounded-t-full opacity-80 shadow-2xl mr-4 transform translate-y-12"></div>
-                           <div class="w-32 h-32 bg-[#A8988A] rounded-t-full opacity-90 shadow-2xl transform translate-y-28"></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-serif text-white group-hover:text-[#32BAD6] transition">Lumina Banking</h3>
-                            <p class="text-sm text-gray-500 mt-1">Fintech Dashboard • 2023</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">React</span>
-                            <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">D3.js</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Project 2 -->
-                <article class="group cursor-pointer md:mt-24">
-                    <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
-                         <div class="absolute inset-0 bg-[#000] flex items-center justify-center group-hover:scale-105 transition duration-700">
-                             <!-- Linear wave pattern simulation -->
-                             <div class="w-[200%] h-[200%] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#333_10px,#333_11px)] opacity-30 transform rotate-12"></div>
-                         </div>
-                    </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-serif text-white group-hover:text-[#32BAD6] transition">Aeon E-Commerce</h3>
-                            <p class="text-sm text-gray-500 mt-1">Design System & Storefront • 2022</p>
-                        </div>
-                        <div class="flex gap-2">
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">NextJs</span>
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">Shopify</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Project 3 -->
-                <article class="group cursor-pointer">
-                    <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
-                        <div class="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition duration-700">
-                             <div class="absolute inset-0 bg-blue-900/20"></div>
-                             <!-- Bokeh effect -->
-                             <div class="w-40 h-40 bg-blue-400 rounded-full blur-[80px] absolute top-10 left-10 opacity-40"></div>
-                             <div class="w-40 h-40 bg-purple-400 rounded-full blur-[80px] absolute bottom-10 right-10 opacity-40"></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-serif text-white group-hover:text-[#32BAD6] transition">Vessel Analytics</h3>
-                            <p class="text-sm text-gray-500 mt-1">SaaS Application • 2024</p>
-                        </div>
-                        <div class="flex gap-2">
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">Vue 3</span>
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">Node</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Project 4 -->
-                <article class="group cursor-pointer md:mt-24">
-                    <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
-                        <div class="absolute inset-0 bg-gradient-to-b from-gray-800 to-black group-hover:scale-105 transition duration-700 flex items-center justify-center">
-                            <div class="w-1/2 h-1/2 border border-white/20 relative shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-                                <div class="absolute inset-4 border border-white/10"></div>
+                @forelse($projects as $index => $project)
+                <article class="group cursor-pointer {{ $project['offset'] ?? false ? 'md:mt-24' : '' }}">
+                   <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
+                        @php
+                            $imagePath = $project['image'] ?? '';
+                            $fullPath = public_path($imagePath);
+                            $imageExists = !empty($imagePath) && file_exists($fullPath);
+                        @endphp
+                        
+                        @if($imageExists)
+                            <img src="{{ asset($imagePath) }}" 
+                                 alt="{{ $project['title'] }}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                                 loading="lazy">
+                        @else
+                            <!-- Gradient placeholder jika gambar tidak ditemukan -->
+                            <div class="absolute inset-0 bg-gradient-to-br {{ $project['gradient'] ?? 'from-gray-700 to-gray-900' }} flex items-center justify-center">
+                                <p class="text-white/30 text-sm">{{ $imagePath }} not found</p>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-2xl font-serif text-white group-hover:text-[#32BAD6] transition">Mono Portfolio</h3>
-                            <p class="text-sm text-gray-500 mt-1">Template Design • 2021</p>
+                            <h3 class="text-2xl font-serif text-white group-hover:text-[#32BAD6] transition">
+                                {{ $project['title'] }}
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                {{ $project['description'] }} • {{ $project['year'] }}
+                            </p>
                         </div>
                         <div class="flex gap-2">
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">Webflow</span>
-                             <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">GSAP</span>
+                            @foreach($project['tech'] as $tech)
+                            <span class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-gray-400">
+                                {{ $tech }}
+                            </span>
+                            @endforeach
                         </div>
                     </div>
                 </article>
+                @empty
+                <div class="col-span-2 text-center py-20">
+                    <p class="text-gray-500">No projects available yet.</p>
+                </div>
+                @endforelse
             </div>
         </div>
     </section>
