@@ -29,3 +29,84 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* Decrypted Text Animation */
+[data-decrypt] {
+    display: block;
+    position: relative;
+    will-change: transform;
+}
+
+h3[data-decrypt],
+h4[data-decrypt] {
+    display: block;
+}
+
+p[data-decrypt] {
+    display: block;
+}
+
+[data-decrypt]:hover {
+    cursor: default;
+}
+
+/* Preserve layout during animation */
+[data-decrypt]::before {
+    content: attr(data-original-text);
+    visibility: hidden;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Encrypted character style (optional) */
+.encrypted-char {
+    color: rgba(50, 186, 214, 0.6);
+    text-shadow: 0 0 2px rgba(50, 186, 214, 0.3);
+}
+
+/* Pixel Transition */
+#pixel-transition-container {
+    position: relative;
+    outline: none;
+}
+
+#pixel-transition-container:focus {
+    outline: 2px solid rgba(50, 186, 214, 0.3);
+    outline-offset: 2px;
+}
+
+.pixel-transition__pixel {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+}
+
+#second-content {
+    text-decoration: none;
+}
+
+#second-content:hover svg {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Project Cards Scroll Animation */
+.project-card {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card[data-direction="left"] {
+    transform: translateX(-100px);
+}
+
+.project-card[data-direction="right"] {
+    transform: translateX(100px);
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+}

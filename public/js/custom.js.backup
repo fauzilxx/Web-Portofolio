@@ -1,23 +1,304 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Project Cards Scroll Animation
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    const projectObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+document.addEventListener('DOMContentLoaded', () => {
+    // ============================================
+    // Target Cursor
+    // ============================================
+    class TargetCursor {
+        constructor(options = {}) {
+            this.targetSelector = options.targetSelector || '.cursor-target';
+            this.spinDuration = options.spinDuration || 2;
+            this.hideDefaultCursor = options.hideDefaultCursor !== false;
+            this.hoverDuration = options.hoverDuration || 0.2;
+            this.parallaxOn = options.parallaxOn !== false;
+            
+            this.cursor = document.getElementById('target-cursor');
+            this.dot = document.getElementById('cursor-dot');
+            this.corners = null;
+            
+            this.spinTl = null;
+            this.isActive = false;
+            this.targetCornerPositions = null;
+            this.activeStrength = 0;
+            this.activeTarget = null;
+            this.currentLeaveHandler = null;
+            this.resumeTimeout = null;
+            
+            this.constants = {
+                borderWidth: 3,
+                cornerSize: 12
+            };
+            
+            this.isMobile = this.detectMobile();
+            
+            if (!this.isMobile && this.cursor) {
+                this.init();
             }
-        });
-    }, {
-        threshold: 0.2,
-        rootMargin: '0px 0px -50px 0px'
-    });
+        }
+        
+        detectMobile() {
+            const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isSmallScreen = window.innerWidth <= 768;
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+            const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
+            return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
+        }
+        
+        init() {
+            // Show cursor dot always for tracking, but hide corners initially
+            this.cursor.style.opacity = '1';
+            
+            this.corners = this.cursor.querySelectorAll('.target-cursor-corner');
+            
+            // Hide corners initially
+            Array.from(this.corners).forEach(corner => {
+                gsap.set(corner, { opacity: 0 });
+            });
+            
+            gsap.set(this.cursor, {
+                xPercent: -50,
+                yPercent: -50,
+                x: window.innerWidth / 2,
+                y: window.innerHeight / 2
+            });
+            
+            this.createSpinTimeline();
+            this.attachEventListeners();
+        }
+        
+        createSpinTimeline() {
+            if (this.spinTl) {
+                this.spinTl.kill();
+            }
+            this.spinTl = gsap.timeline({ repeat: -1 })
+                .to(this.cursor, { rotation: '+=360', duration: this.spinDuration, ease: 'none' });
+        }
+        
+        moveCursor(x, y) {
+            if (!this.cursor) return;
+            gsap.to(this.cursor, {
+                x,
+                y,
+                duration: 0.1,
+                ease: 'power3.out'
+            });
+        }
+        
+        tickerFn() {
+            if (!this.targetCornerPositions || !this.cursor || !this.corners) return;
+            
+            const strength = this.activeStrength;
+            if (strength === 0) return;
+            
+            const cursorX = gsap.getProperty(this.cursor, 'x');
+            const cursorY = gsap.getProperty(this.cursor, 'y');
+            
+            Array.from(this.corners).forEach((corner, i) => {
+                const currentX = gsap.getProperty(corner, 'x');
+                const currentY = gsap.getProperty(corner, 'y');
+                const targetX = this.targetCornerPositions[i].x - cursorX;
+                const targetY = this.targetCornerPositions[i].y - cursorY;
+                const finalX = currentX + (targetX - currentX) * strength;
+                const finalY = currentY + (targetY - currentY) * strength;
+                const duration = strength >= 0.99 ? (this.parallaxOn ? 0.2 : 0) : 0.05;
+                
+                gsap.to(corner, {
+                    x: finalX,
+                    y: finalY,
+                    duration: duration,
+                    ease: duration === 0 ? 'none' : 'power1.out',
+                    overwrite: 'auto'
+                });
+            });
+        }
+        
+        cleanupTarget(target) {
+            if (this.currentLeaveHandler) {
+                target.removeEventListener('mouseleave', this.currentLeaveHandler);
+            }
+            this.currentLeaveHandler = null;
+        }
+        
+        handleEnter(e) {
+            const directTarget = e.target;
+            const allTargets = [];
+            let current = directTarget;
+            
+            while (current && current !== document.body) {
+                if (current.matches(this.targetSelector)) {
+                    allTargets.push(current);
+                }
+                current = current.parentElement;
+            }
+            
+            const target = allTargets[0] || null;
+            if (!target || !this.cursor || !this.corners) return;
+            if (this.activeTarget === target) return;
+            
+            if (this.activeTarget) {
+            // Show custom cursor and hide default cursor
+            gsap.to(this.cursor, { opacity: 1, duration: 0.2 });
+            if (this.hideDefaultCursor) {
+                document.body.style.cursor = 'none';
+            }
+            
+                this.cleanupTarget(this.activeTarget);
+            }
+            
+            if (this.resumeTimeout) {
+                clearTimeout(this.resumeTimeout);
+                this.resumeTimeout = null;
+            }
+            
+            this.activeTarget = target;
+            
+            Array.from(this.corners).forEach(corner => gsap.killTweensOf(corner));
+            gsap.killTweensOf(this.cursor, 'rotation');
+            this.spinTl?.pause();
+            gsap.set(this.cursor, { rotation: 0 });
+            
+            const rect = target.getBoundingClientRect();
+            const { borderWidth, cornerSize } = this.constants;
+            const cursorX = gsap.getProperty(this.cursor, 'x');
+            const cursorY = gsap.getProperty(this.cursor, 'y');
+            
+            this.targetCornerPositions = [
+                { x: rect.left - borderWidth, y: rect.top - borderWidth },
+                { x: rect.right + borderWidth - cornerSize, y: rect.top - borderWidth },
+                { x: rect.right + borderWidth - cornerSize, y: rect.bottom + borderWidth - cornerSize },
+                { x: rect.left - borderWidth, y: rect.bottom + borderWidth - cornerSize }
+            ];
+            
+            this.isActive = true;
+            gsap.ticker.add(() => this.tickerFn());
+            
+            gsap.to(this, { activeStrength: 1, duration: this.hoverDuration, ease: 'power2.out' });
+            
+            Array.from(this.corners).forEach((corner, i) => {
+                gsap.to(corner, {
+                    x: this.targetCornerPositions[i].x - cursorX,
+                    y: this.targetCornerPositions[i].y - cursorY,
+                    duration: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+            
+            const leaveHandler = () => {
+                // Hide corners and restore default cursor
+                if (this.corners) {
+                    Array.from(this.corners).forEach(corner => {
+                        gsap.to(corner, { opacity: 0, duration: 0.2 });
+                    });
+                }
+                
+                if (this.hideDefaultCursor) {
+                    document.body.style.cursor = '';
+                }
+                
+                gsap.ticker.remove(() => this.tickerFn());
+                this.isActive = false;
+                this.targetCornerPositions = null;
+                this.activeStrength = 0;
+                this.activeTarget = null;
+                
+                if (this.corners) {
+                    const corners = Array.from(this.corners);
+                    gsap.killTweensOf(corners);
+                    const { cornerSize } = this.constants;
+                    const positions = [
+                        { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
+                        { x: cornerSize * 0.5, y: -cornerSize * 1.5 },
+                        { x: cornerSize * 0.5, y: cornerSize * 0.5 },
+                        { x: -cornerSize * 1.5, y: cornerSize * 0.5 }
+                    ];
+                    
+                    corners.forEach((corner, index) => {
+                        gsap.to(corner, { 
+                            x: positions[index].x, 
+                            y: positions[index].y, 
+                            duration: 0.3, 
+                            ease: 'power3.out' 
+                        });
+                    });
+                }
+                
+                this.resumeTimeout = setTimeout(() => {
+                    if (!this.activeTarget && this.cursor && this.spinTl) {
+                        const currentRotation = gsap.getProperty(this.cursor, 'rotation');
+                        const normalizedRotation = currentRotation % 360;
+                        this.spinTl.kill();
+                        this.spinTl = gsap.timeline({ repeat: -1 })
+                            .to(this.cursor, { rotation: '+=360', duration: this.spinDuration, ease: 'none' });
+                        
+                        gsap.to(this.cursor, {
+                            rotation: normalizedRotation + 360,
+                            duration: this.spinDuration * (1 - normalizedRotation / 360),
+                            ease: 'none',
+                            onComplete: () => {
+                                this.spinTl?.restart();
+                            }
+                        });
+                    }
+                    this.resumeTimeout = null;
+                }, 50);
+                
+                this.cleanupTarget(target);
+            };
+            
+            this.currentLeaveHandler = leaveHandler;
+            target.addEventListener('mouseleave', leaveHandler);
+        }
+        
+        handleScroll() {
+            if (!this.activeTarget || !this.cursor) return;
+            
+            const mouseX = gsap.getProperty(this.cursor, 'x');
+            const mouseY = gsap.getProperty(this.cursor, 'y');
+            const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
+            
+            const isStillOverTarget = elementUnderMouse && 
+                (elementUnderMouse === this.activeTarget || 
+                 elementUnderMouse.closest(this.targetSelector) === this.activeTarget);
+            
+            if (!isStillOverTarget && this.currentLeaveHandler) {
+                this.currentLeaveHandler();
+            }
+        }
+        
+        handleMouseDown() {
+            if (!this.dot) return;
+            gsap.to(this.dot, { scale: 0.7, duration: 0.3 });
+            gsap.to(this.cursor, { scale: 0.9, duration: 0.2 });
+        }
+        
+        handleMouseUp() {
+            if (!this.dot) return;
+            gsap.to(this.dot, { scale: 1, duration: 0.3 });
+            gsap.to(this.cursor, { scale: 1, duration: 0.2 });
+        }
+        
+        attachEventListeners() {
+            window.addEventListener('mousemove', (e) => this.moveCursor(e.clientX, e.clientY));
+            window.addEventListener('mouseover', (e) => this.handleEnter(e), { passive: true });
+            window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+            window.addEventListener('mousedown', () => this.handleMouseDown());
+            window.addEventListener('mouseup', () => this.handleMouseUp());
+        }
+    }
     
-    projectCards.forEach(card => {
-        projectObserver.observe(card);
-    });
+    // Initialize Target Cursor
+    if (typeof gsap !== 'undefined') {
+        new TargetCursor({
+            targetSelector: '.cursor-target',
+            spinDuration: 2,
+            hideDefaultCursor: true,
+            hoverDuration: 0.2,
+            parallaxOn: true
+        });
+    }
 
+    // ============================================
     // Tech Stack Scroll
+    // ============================================
     const container = document.getElementById('tech-scroll-container');
     const track = document.getElementById('tech-track');
     

@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}?v={{ time() }}">
 </head>
 <body class="bg-[#0A1014] text-gray-300 font-sans antialiased selection:bg-[#32BAD6] selection:text-white">
@@ -56,11 +57,31 @@
                 </div>
             </div>
 
-            <!-- Right Column: Image -->
+            <!-- Right Column: Image with Pixel Transition -->
             <div class="flex justify-center md:justify-end relative z-10 opacity-0 animate-spin-split-right">
                 <div class="absolute inset-0 bg-gradient-to-tr from-[#32BAD6]/20 to-purple-500/20 blur-[80px] rounded-full scale-90"></div>
-                <div class="relative w-full max-w-sm aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#151C21]">
-                <img src="images/Picture_Profile.png" alt="Profile Picture" class="w-full h-full object-cover" style="object-fit: cover; width: 100%; height: 100%;">
+                
+                <!-- Pixel Transition Container -->
+                <div id="pixel-transition-container" 
+                     class="relative w-full max-w-sm aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#151C21] cursor-pointer transition-transform hover:scale-105 duration-500"
+                     tabindex="0">
+                    
+                    <!-- Original Content: Profile Picture -->
+                    <div id="first-content" class="absolute inset-0 w-full h-full">
+                        <img src="images/Picture_Profile.png" alt="Profile Picture" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <a href="https://instagram.com/fauzil.azhimm" target="_blank" rel="noopener noreferrer"
+                       id="second-content" 
+                       class="absolute inset-0 w-full h-full z-[2] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black" 
+                       style="display: none;">
+                        <svg class="w-1/2 h-1/2 opacity-90 hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z" fill="white"/>
+                        </svg>
+                    </a>
+                    
+                    <!-- Pixel Grid Overlay -->
+                    <div id="pixel-grid" class="absolute inset-0 w-full h-full pointer-events-none z-[3]"></div>
                 </div>
             </div>
 
@@ -81,36 +102,11 @@
 
         <div id="tech-scroll-container" class="flex overflow-x-scroll no-scrollbar cursor-grab active:cursor-grabbing items-center" style="scroll-behavior: auto;">
             <div id="tech-track" class="flex items-center gap-16 px-10">
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg" class="w-10 h-10 pointer-events-none" alt="Laravel">
+                @foreach($tools as $tool)
+                <div class="tech-item flex items-center gap-3 shrink-0 select-none pointer-events-none">
+                    <img src="{{ $tool['image'] }}" alt="Tech Stack" class="w-10 h-10 object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                 </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" class="w-10 h-10 pointer-events-none" alt="Tailwind">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg" class="w-10 h-10 pointer-events-none" alt="PHP">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://labs.mysql.com/common/logos/mysql-logo.svg" class="w-10 h-10 pointer-events-none" alt="MySQL">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" class="w-10 h-10 pointer-events-none" alt="React">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://nodejs.org/static/images/logo.svg" class="w-10 h-10 bg-white/10 rounded px-1 pointer-events-none" alt="Node.js">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" class="w-10 h-10 pointer-events-none" alt="Python">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg" class="w-10 h-10 pointer-events-none" alt="Java">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg" class="w-13 h-13 pointer-events-none" alt="Git">
-                </div>
-                <div class="tech-item flex items-center gap-3 shrink-0 select-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" class="w-10 h-10 pointer-events-none" alt="C">
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -127,7 +123,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-20">
                 @forelse($projects as $index => $project)
-                <article class="group cursor-pointer {{ $project['offset'] ?? false ? 'md:mt-24' : '' }}">
+                <article class="project-card group cursor-pointer {{ $project['offset'] ?? false ? 'md:mt-24' : '' }}" data-direction="{{ $index % 2 == 0 ? 'left' : 'right' }}">
                    <div class="aspect-[4/3] bg-[#151C21] rounded-2xl overflow-hidden mb-6 relative">
                         @php
                             $imagePath = $project['image'] ?? '';
@@ -174,18 +170,21 @@
         </div>
     </section>
 
-    <!-- Info Section (Philosophy & Experience) -->
     <section id="about" class="py-32 bg-[#0D1318]">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20">
             <!-- Philosophy -->
             <div>
                 <span class="text-xs font-bold tracking-widest text-[#32BAD6] uppercase mb-6 block">Philosophy</span>
-                <h3 class="text-3xl font-serif text-white leading-snug mb-8">
-                    "I build digital products that honor the raw materials of the web: semantic HTML, resilient CSS, and performant JavaScript."
-                </h3>
-                <p class="text-gray-400 leading-relaxed">
-                    With over 8 years of experience in frontend engineering, I bridge the gap between design vision and technical implementation. I believe that the most sophisticated interfaces are often the most invisible, allowing users to achieve their goals without friction.
-                </p>
+                <h3 class="text-3xl font-serif text-white leading-snug mb-8" 
+                    data-decrypt="view" 
+                    data-decrypt-speed="25"
+                    data-decrypt-sequential="true"
+                    data-decrypt-chars="original">My philosophy is simple: solve real problems with thoughtful design and clean engineering. I strive to create systems that are not only beautiful, but reliable, scalable, and built to last.</h3>
+                <p class="text-gray-400 leading-relaxed" 
+                   data-decrypt="view" 
+                   data-decrypt-speed="20"
+                   data-decrypt-sequential="true"
+                   data-decrypt-chars="original">With growing experience in web development, I continuously refine my approach to building scalable systems and intuitive interfaces. I prioritize clean architecture, maintainable code, and thoughtful design decisions to ensure every solution remains efficient, reliable, and adaptable over time.</p>
             </div>
 
             <!-- Experience -->
@@ -194,24 +193,53 @@
                 <div class="space-y-8">
                     <div class="pb-8 border-b border-white/5">
                         <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-xl font-bold text-white">Senior Frontend Engineer</h4>
-                            <span class="text-sm text-gray-500 font-mono">2021 — Present</span>
+                            <h4 class="text-xl font-bold text-white" 
+                                data-decrypt="hover" 
+                                data-decrypt-speed="20"
+                                data-decrypt-sequential="true"
+                                data-decrypt-chars="original">Staff of Technology and Business</h4>
+                            <span class="text-sm text-gray-500 font-mono">2026 — Present</span>
                         </div>
-                        <p class="text-gray-400 text-sm">TechCorp Inc.</p>
+                        <p class="text-gray-400 text-sm" 
+                           data-decrypt="hover" 
+                           data-decrypt-speed="15"
+                           data-decrypt-sequential="true"
+                           data-decrypt-chars="original">Bem Fatisda</p>
                     </div>
                     <div class="pb-8 border-b border-white/5">
                         <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-xl font-bold text-white">Frontend Developer</h4>
-                            <span class="text-sm text-gray-500 font-mono">2018 — 2021</span>
+                            <h4 class="text-xl font-bold text-white" 
+                                data-decrypt="hover" 
+                                data-decrypt-speed="20"
+                                data-decrypt-sequential="true"
+                                data-decrypt-chars="original">Participant of Web3 Sui Devworkshop</h4>
+                            <span class="text-sm text-gray-500 font-mono">2025</span>
                         </div>
-                        <p class="text-gray-400 text-sm">Creative Agency Studio</p>
+                        <p class="text-gray-400 text-sm" 
+                           data-decrypt="hover" 
+                           data-decrypt-speed="15"
+                           data-decrypt-sequential="true"
+                           data-decrypt-chars="original">1st Project in Minihackathon</p>
+                        <p class="text-gray-400 text-sm" 
+                           data-decrypt="hover" 
+                           data-decrypt-speed="15"
+                           data-decrypt-sequential="true"
+                           data-decrypt-chars="original">Sui Indonesia Community Workshop</p>
                     </div>
                     <div class="pb-8 border-b border-white/5">
                         <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-xl font-bold text-white">UI Engineer</h4>
-                            <span class="text-sm text-gray-500 font-mono">2016 — 2018</span>
+                            <h4 class="text-xl font-bold text-white" 
+                                data-decrypt="hover" 
+                                data-decrypt-speed="20"
+                                data-decrypt-sequential="true"
+                                data-decrypt-chars="original">Lecturer Assistant</h4>
+                            <span class="text-sm text-gray-500 font-mono">2025 - Present</span>
                         </div>
-                        <p class="text-gray-400 text-sm">Startup X</p>
+                        <p class="text-gray-400 text-sm" 
+                           data-decrypt="hover" 
+                           data-decrypt-speed="15"
+                           data-decrypt-sequential="true"
+                           data-decrypt-chars="original">FATISDA UNS</p>
                     </div>
                 </div>
             </div>
@@ -230,7 +258,7 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-6 mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-wider font-medium">
-            <p>&copy; 2024 Elena Vance. All Rights Reserved.</p>
+            <p>&copy; By Fauzil Azhim 2026</p>
             <div class="flex gap-8 my-4 md:my-0">
                 <a href="#" class="hover:text-white transition">Twitter</a>
                 <a href="#" class="hover:text-white transition">LinkedIn</a>
