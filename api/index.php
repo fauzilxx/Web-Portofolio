@@ -1,36 +1,34 @@
 <?php
 
-// Vercel Serverless Function Entry Point for Laravel
+// Vercel Serverless PHP - Laravel Bootstrap
 
-// Create necessary directories for Laravel in /tmp (writable in serverless)
-$dirs = [
-    '/tmp/storage/framework/cache',
-    '/tmp/storage/framework/sessions',
-    '/tmp/storage/framework/views',
-    '/tmp/storage/logs',
-];
+try {
+    // Autoload
+    require __DIR__ . '/../vendor/autoload.php';
 
-foreach ($dirs as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+    // Bootstrap Laravel
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+
+    // Handle Request
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+    $response = $kernel->handle(
+        $request = Illuminate\Http\Request::capture()
+    );
+
+    $response->send();
+
+    $kernel->terminate($request, $response);
+    
+} catch (\Throwable $e) {
+    // Fallback error display
+    http_response_code(500);
+    if (getenv('APP_DEBUG') === 'true') {
+        echo '<h1>Laravel Bootstrap Error</h1>';
+        echo '<pre>' . htmlspecialchars($e->getMessage()) . '</pre>';
+        echo '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+    } else {
+        echo '<h1>500 Server Error</h1>';
+        echo '<p>Something went wrong.</p>';
     }
 }
-
-// Set the application start time
-define('LARAVEL_START', microtime(true));
-
-// Register the Composer autoloader
-require __DIR__ . '/../vendor/autoload.php';
-
-// Bootstrap Laravel and handle the request
-$app = require_once __DIR__ . '/../bootstrap/app.php';
-
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
-
-$response->send();
-
-$kernel->terminate($request, $response);
