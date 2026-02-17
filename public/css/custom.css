@@ -95,6 +95,7 @@ p[data-decrypt] {
 /* Project Cards Scroll Animation */
 .project-card {
     opacity: 0;
+    will-change: transform, opacity;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -109,28 +110,69 @@ p[data-decrypt] {
 .project-card.visible {
     opacity: 1;
     transform: translateX(0);
+    will-change: auto;
+}
+
+/* Simplify animation on mobile */
+@media (max-width: 768px) {
+    .project-card {
+        transition: opacity 0.5s ease-out;
+    }
+    
+    .project-card[data-direction="left"],
+    .project-card[data-direction="right"] {
+        transform: none;
+    }
 }
 
 /* Footer Fade Animation */
 .footer-fade {
     opacity: 0;
     transform: translateY(30px);
+    will-change: transform, opacity;
     transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .footer-fade.visible {
     opacity: 1;
     transform: translateY(0);
+    will-change: auto;
+}
+
+/* Simplify on mobile */
+@media (max-width: 768px) {
+    .footer-fade {
+        transform: none;
+        transition: opacity 0.6s ease-out;
+    }
+    
+    .footer-fade.visible {
+        transform: none;
+    }
 }
 
 /* Experience Slide Animation */
 .experience-slide {
     opacity: 0;
     transform: translateX(100px);
+    will-change: transform, opacity;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .experience-slide.visible {
     opacity: 1;
     transform: translateX(0);
+    will-change: auto;
+}
+
+/* Optimize for mobile - simpler animation */
+@media (max-width: 768px) {
+    .experience-slide {
+        transform: translateX(30px);
+        transition: all 0.5s ease-out;
+    }
+    
+    .experience-slide.visible {
+        transform: translateX(0);
+    }
 }

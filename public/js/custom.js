@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Detect mobile device
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                          window.innerWidth < 768;
+    
     // Project Cards Scroll Animation
     const projectCards = document.querySelectorAll('.project-card');
     
@@ -6,10 +10,15 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                
+                // On mobile, stop observing after animation to save resources
+                if (isMobileDevice) {
+                    projectObserver.unobserve(entry.target);
+                }
             }
         });
     }, {
-        threshold: 0.2,
+        threshold: isMobileDevice ? 0.1 : 0.2,
         rootMargin: '0px 0px -50px 0px'
     });
     
@@ -21,17 +30,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const experienceSection = document.querySelector('.experience-slide');
     
     if (experienceSection) {
+        // Detect mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                        window.innerWidth < 768;
+        
         const experienceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                } else {
-                    // Remove class when out of view so it can re-trigger
+                    
+                    // On mobile, stop observing after first animation to save resources
+                    if (isMobile) {
+                        experienceObserver.unobserve(entry.target);
+                    }
+                } else if (!isMobile) {
+                    // Only reset on desktop for re-trigger effect
                     entry.target.classList.remove('visible');
                 }
             });
         }, {
-            threshold: 0.2,
+            threshold: isMobile ? 0.1 : 0.2,
             rootMargin: '0px 0px -50px 0px'
         });
         
@@ -45,10 +63,13 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                
+                // Stop observing after animation completes
+                footerObserver.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.1,
+        threshold: isMobileDevice ? 0.05 : 0.1,
         rootMargin: '0px 0px -100px 0px'
     });
     
@@ -65,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     track.innerHTML = items + items + items + items; // 4x duplication for safety
 
     let scrollAmount = 0;
-    const speed = 0.5; // Slightly increased for reliability
+    const speed = isMobileDevice ? 0.3 : 0.5; // Slower on mobile for better performance
     let isHovered = false;
     let isDragging = false;
     let startX;
@@ -73,9 +94,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Independent accumulator for sub-pixel scrolling
     let outputScroll = 0; 
+    let lastFrameTime = 0;
+    const frameInterval = isMobileDevice ? 1000 / 30 : 1000 / 60; // 30fps on mobile, 60fps on desktop
 
     // Auto Scroll Function
-    function step() {
+    function step(currentTime) {
+        // Throttle frame rate on mobile
+        if (isMobileDevice) {
+            if (currentTime - lastFrameTime < frameInterval) {
+                requestAnimationFrame(step);
+                return;
+            }
+            lastFrameTime = currentTime;
+        }
+        
         // Run even if isHovered is true, only stops when strictly dragging
         if (!isDragging) {
             outputScroll += speed;
@@ -130,9 +162,29 @@ document.addEventListener('DOMContentLoaded', function() {
         container.scrollLeft = scrollLeft - walk;
     });
     
-    // Touch Events for Mobile
-    container.addEventListener('touchstart', () => { isDragging = true; });
-    container.addEventListener('touchend', () => { isDragging = false; });
+    // Touch Events for Mobile (with passive listeners for better performance)
+    let touchStartTime = 0;
+    container.addEventListener('touchstart', (e) => { 
+        isDragging = true; 
+        touchStartTime = Date.now();
+    }, { passive: true });
+    
+    container.addEventListener('touchend', (e) => { 
+        const touchDuration = Date.now() - touchStartTime;
+        isDragging = false; 
+        
+        // Resume auto-scroll after short delay
+        if (touchDuration < 300) {
+            setTimeout(() => { isDragging = false; }, 100);
+        }
+    }, { passive: true });
+    
+    // Prevent momentum scrolling from interfering on mobile
+    container.addEventListener('touchmove', (e) => {
+        if (isMobileDevice) {
+            isDragging = true;
+        }
+    }, { passive: true });
 
     // ============================================
     // Pixel Transition Animation
@@ -169,6 +221,9 @@ document.addEventListener('DOMContentLoaded', function() {
         createPixelGrid() {
             this.pixelGrid.innerHTML = '';
             
+            // Use DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
+            
             for (let row = 0; row < this.gridSize; row++) {
                 for (let col = 0; col < this.gridSize; col++) {
                     const pixel = document.createElement('div');
@@ -183,9 +238,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     pixel.style.position = 'absolute';
                     pixel.style.display = 'none';
                     
-                    this.pixelGrid.appendChild(pixel);
+                    // Enable hardware acceleration
+                    pixel.style.transform = 'translateZ(0)';
+                    pixel.style.backfaceVisibility = 'hidden';
+                    
+                    fragment.appendChild(pixel);
                 }
             }
+            
+            this.pixelGrid.appendChild(fragment);
         }
         
         animatePixels(activate) {
@@ -270,9 +331,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Pixel Transition
     if (typeof gsap !== 'undefined') {
         new PixelTransition('pixel-transition-container', {
-            gridSize: 9,
+            gridSize: isMobileDevice ? 6 : 9, // Smaller grid on mobile for better performance
             pixelColor: '#0A1014',
-            animationStepDuration: 0.4,
+            animationStepDuration: isMobileDevice ? 0.3 : 0.4, // Faster on mobile
             once: false
         });
     }
@@ -291,53 +352,73 @@ document.addEventListener('DOMContentLoaded', function() {
             this.useOriginalCharsOnly = element.dataset.decryptChars === 'original';
             this.characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+';
             
+            // Detect mobile device
+            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                           window.innerWidth < 768;
+            
             this.isAnimating = false;
             this.hasAnimated = false;
             this.revealedIndices = new Set();
             this.interval = null;
             this.currentIteration = 0;
+            this.animationFrame = null;
             
             // Store original text and set initial content
             this.element.textContent = this.originalText;
+            
+            // Add CSS optimization hint
+            this.element.style.willChange = 'contents';
             
             this.init();
         }
         
         init() {
-            // Setup for hover animation
+            // On mobile, skip animation entirely - just fade in
+            if (this.isMobile && (this.animateOn === 'view' || this.animateOn === 'both')) {
+                this.element.style.opacity = '0';
+                this.element.style.transition = 'opacity 0.6s ease-out';
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.hasAnimated) {
+                            setTimeout(() => {
+                                this.element.style.opacity = '1';
+                                this.hasAnimated = true;
+                                // Remove will-change after animation
+                                setTimeout(() => {
+                                    this.element.style.willChange = 'auto';
+                                }, 600);
+                            }, 100);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px'
+                });
+                
+                observer.observe(this.element);
+                return;
+            }
+            
+            // Desktop: Setup for hover animation
             if (this.animateOn === 'hover' || this.animateOn === 'both') {
                 this.element.addEventListener('mouseenter', () => this.startAnimation());
                 this.element.addEventListener('mouseleave', () => this.stopAnimation());
             }
             
-            // Setup for view animation (Intersection Observer)
+            // Desktop: Setup for view animation (Intersection Observer)
             if (this.animateOn === 'view' || this.animateOn === 'both') {
-                let previousY = 0;
-                let previousRatio = 0;
-                
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        const currentY = entry.boundingClientRect.y;
-                        const currentRatio = entry.intersectionRatio;
-                        const isIntersecting = entry.isIntersecting;
-                        
-                        // Detect scrolling down: element is entering viewport from bottom
-                        const isScrollingDown = currentY < previousY;
-                        const isBecomingVisible = currentRatio > previousRatio;
-                        
-                        if (isIntersecting && isScrollingDown && isBecomingVisible && !this.hasAnimated) {
-                            // Small delay for smoother appearance
+                        if (entry.isIntersecting && !this.hasAnimated) {
                             setTimeout(() => {
                                 this.startAnimation();
                                 this.hasAnimated = true;
                             }, 100);
                         }
-                        
-                        previousY = currentY;
-                        previousRatio = currentRatio;
                     });
                 }, {
-                    threshold: [0, 0.1, 0.2, 0.3],
+                    threshold: 0.2,
                     rootMargin: '0px'
                 });
                 
