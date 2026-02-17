@@ -1,52 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "npm install && npm run build",
-  "framework": null,
-  "outputDirectory": "public",
-  "routes": [
-    {
-      "src": "/test",
-      "dest": "/api/test.php"
-    },
-    {
-      "src": "/build/(.*)",
-      "dest": "/build/$1"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/js/$1"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.php"
-    }
-  ],
-  "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.7.2",
-      "maxDuration": 10
-    }
-  },
-  "env": {
-    "APP_NAME": "Portfolio",
-    "APP_ENV": "production",
-    "APP_DEBUG": "true",
-    "APP_KEY": "base64:goH0q54WfxJBd7Uyx3XL8lml40KxcoBV+xvzZpmLZ7Q=",
-    "APP_URL": "https://fauzil-portfolio.vercel.app",
-    "LOG_CHANNEL": "stderr",
-    "LOG_LEVEL": "debug",
-    "DB_CONNECTION": "",
-    "SESSION_DRIVER": "array",
-    "CACHE_STORE": "array",
-    "QUEUE_CONNECTION": "sync",
-    "FILESYSTEM_DISK": "local"
-  }
+  "buildCommand": "composer install --no-dev --optimize-autoloader && npm install && npm run export",
+  "outputDirectory": "public/dist",
+  "cleanUrls": true,
+  "trailingSlash": false
 }
