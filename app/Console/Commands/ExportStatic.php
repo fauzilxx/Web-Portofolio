@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 
 class ExportStatic extends Command
 {
@@ -26,6 +25,14 @@ class ExportStatic extends Command
         // Export home page
         $this->info('Exporting home page...');
         $html = $this->fetchRoute('/');
+        
+        // Fix asset paths for root deployment
+        $html = str_replace('href="/build/', 'href="build/', $html);
+        $html = str_replace('src="/build/', 'src="build/', $html);
+        $html = str_replace('href="/css/', 'href="css/', $html);
+        $html = str_replace('src="/js/', 'src="js/', $html);
+        $html = str_replace('src="/images/', 'src="images/', $html);
+        
         File::put($exportPath . '/index.html', $html);
         
         // Copy assets
