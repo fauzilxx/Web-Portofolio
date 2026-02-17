@@ -26,20 +26,6 @@ class ExportStatic extends Command
         $this->info('Exporting home page...');
         $html = $this->fetchRoute('/');
         
-        // Fix all asset paths - remove leading slash for relative paths
-        $html = preg_replace('/href="\/([^"]+)"/', 'href="$1"', $html);
-        $html = preg_replace('/src="\/([^"]+)"/', 'src="$1"', $html);
-        
-        // Keep external URLs intact
-        $html = str_replace('href="https:', 'href="/https:', $html);
-        $html = str_replace('src="https:', 'src="/https:', $html);
-        $html = str_replace('href="http:', 'href="/http:', $html);
-        $html = str_replace('src="http:', 'src="/http:', $html);
-        $html = str_replace('href="/https:', 'href="https:', $html);
-        $html = str_replace('src="/https:', 'src="https:', $html);
-        $html = str_replace('href="/http:', 'href="http:', $html);
-        $html = str_replace('src="/http:', 'src="http:', $html);
-        
         File::put($exportPath . '/index.html', $html);
         
         // Copy all assets
@@ -78,10 +64,18 @@ class ExportStatic extends Command
     
     private function fetchRoute($path)
     {
+        // Set APP_URL to empty string for relative paths
+        config(['app.url' => '']);
+        
         $app = app();
         $request = \Illuminate\Http\Request::create($path, 'GET');
         $response = $app->handle($request);
         
-        return $response->getContent();
+        $html = $response->getContent();
+        
+        // Replace any remaining localhost references with relative paths
+        $html = preg_replace('#http://localhost/([^"\']+)#', '$1', $html);
+        
+        return $html;
     }
 }
