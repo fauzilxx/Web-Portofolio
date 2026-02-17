@@ -1,0 +1,136 @@
+.font-serif { font-family: 'Playfair Display', serif; }
+.font-sans { font-family: 'Instrument Sans', sans-serif; }
+
+/* Custom Animation Keyframes */
+@keyframes spinSplitLeft {
+    0% { opacity: 0; transform: translateX(100%) rotate(180deg) scale(0.1); filter: blur(20px); }
+    20% { opacity: 1; }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); filter: blur(0px); }
+}
+@keyframes spinSplitRight {
+    0% { opacity: 0; transform: translateX(-100%) rotate(-180deg) scale(0.1); filter: blur(20px); }
+    20% { opacity: 1; }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); filter: blur(0px); }
+}
+
+.animate-spin-split-left {
+    animation: spinSplitLeft 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-spin-split-right {
+    animation: spinSplitRight 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Decrypted Text Animation */
+[data-decrypt] {
+    display: block;
+    position: relative;
+    will-change: transform;
+}
+
+h3[data-decrypt],
+h4[data-decrypt] {
+    display: block;
+}
+
+p[data-decrypt] {
+    display: block;
+}
+
+[data-decrypt]:hover {
+    cursor: default;
+}
+
+/* Preserve layout during animation */
+[data-decrypt]::before {
+    content: attr(data-original-text);
+    visibility: hidden;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Encrypted character style (optional) */
+.encrypted-char {
+    color: rgba(50, 186, 214, 0.6);
+    text-shadow: 0 0 2px rgba(50, 186, 214, 0.3);
+}
+
+/* Pixel Transition */
+#pixel-transition-container {
+    position: relative;
+    outline: none;
+}
+
+#pixel-transition-container:focus {
+    outline: 2px solid rgba(50, 186, 214, 0.3);
+    outline-offset: 2px;
+}
+
+.pixel-transition__pixel {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+}
+
+#second-content {
+    text-decoration: none;
+}
+
+#second-content:hover svg {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Project Cards Scroll Animation */
+.project-card {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card[data-direction="left"] {
+    transform: translateX(-100px);
+}
+
+.project-card[data-direction="right"] {
+    transform: translateX(100px);
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Footer Fade Animation */
+.footer-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Experience Slide Animation */
+.experience-slide {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.experience-slide.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
