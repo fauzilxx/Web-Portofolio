@@ -4,6 +4,6 @@
         <a href="#home" class="nav-link text-gray-400 hover:text-[#32BAD6] transition" data-section="home">Home</a>
         <a href="#work" class="nav-link text-gray-400 hover:text-[#32BAD6] transition" data-section="work">Work</a>
         <a href="#about" class="nav-link text-gray-400 hover:text-[#32BAD6] transition" data-section="about">About</a>
-        <a href="#contact" class="nav-link text-gray-400 hover:text-[#32BAD6] transition whitespace-nowrap" data-section="contact">Let's Talk</a>
+        <a href="#contact" class="text-[#32BAD6] hover:text-[#2aa0b9] transition whitespace-nowrap" data-section="contact">Let's Talk</a>
     </nav>
 </div>
