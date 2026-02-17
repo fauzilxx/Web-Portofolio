@@ -33,7 +33,7 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_KEY": "base64:your-app-key-here",
+    "APP_KEY": "base64:goH0q54WfxJBd7Uyx3XL8lml40KxcoBV+xvzZpmLZ7Q=",
     "APP_URL": "https://fauzil's portofolio.vercel.app"
   }
 }
