@@ -2,12 +2,30 @@
 
 // Vercel Serverless PHP - Laravel Bootstrap
 
+// Create writable directories in /tmp for Vercel
+$storagePath = '/tmp/storage';
+$dirs = [
+    $storagePath . '/framework/cache/data',
+    $storagePath . '/framework/sessions',
+    $storagePath . '/framework/views',
+    $storagePath . '/logs',
+];
+
+foreach ($dirs as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+}
+
 try {
     // Autoload
     require __DIR__ . '/../vendor/autoload.php';
 
     // Bootstrap Laravel
     $app = require_once __DIR__ . '/../bootstrap/app.php';
+    
+    // Override storage path to /tmp
+    $app->useStoragePath($storagePath);
 
     // Handle Request
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
