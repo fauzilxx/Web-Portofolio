@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "composer install && npm install && npm run build",
+  "buildCommand": "npm install && npm run build",
   "framework": null,
   "outputDirectory": "public",
   "routes": [
@@ -22,7 +22,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/index.php"
+      "dest": "/api/index.php"
     }
   ],
   "functions": {
@@ -34,6 +34,6 @@
     "APP_ENV": "production",
     "APP_DEBUG": "false",
     "APP_KEY": "base64:goH0q54WfxJBd7Uyx3XL8lml40KxcoBV+xvzZpmLZ7Q=",
-    "APP_URL": "https://fauzil's portofolio.vercel.app"
+    "APP_URL": "https://fauzil-portfolio.vercel.app"
   }
 }
