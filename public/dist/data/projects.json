@@ -1,0 +1,121 @@
+[
+  {
+    "id": "proj-001",
+    "title": "PacePoint",
+    "description": "Platform Management Running Events",
+    "year": "2025",
+    "tech": ["React", "Supabase"],
+    "image": "images/PacePoint-1.png",
+    "featured": true,
+    "gradient": "from-[#2a353c] to-[#121619]",
+    "offset": false
+  },
+  {
+    "id": "proj-002",
+    "title": "Todo List",
+    "description": "Todo List Web Application",
+    "year": "2025",
+    "tech": ["Laravel", "MySQL"],
+    "image": "images/Todo-List.png",
+    "featured": true,
+    "gradient": "from-black to-gray-900",
+    "offset": true
+  },
+  {
+    "id": "proj-003",
+    "title": "Java Project",
+    "description": "Hospital Management System",
+    "year": "2025",
+    "tech": ["Java"],
+    "image": "images/Java Project.png",
+    "featured": true,
+    "gradient": "from-blue-900/20 to-purple-900/20",
+    "offset": false
+  },
+  {
+    "id": "proj-004",
+    "title": "Simple Blog",
+    "description": " Simple Blog Website Design",
+    "year": "2024",
+    "tech": ["HTML", "CSS", "JavaScript"],
+    "image": "images/Blog.png",
+    "featured": true,
+    "gradient": "from-gray-800 to-black",
+    "offset": true
+  },
+  {
+    "id": "proj-005",
+    "title": "Run2Earn",
+    "description": "Blockchain-based Running Events App",
+    "year": "2025",
+    "tech": ["React" , "Move"],
+    "image": "images/run2earn.png",
+    "featured": true,
+    "gradient": "from-gray-800 to-black",
+    "offset": true
+  },
+  {
+    "id": "tool-001",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg",
+    "featured": true,
+    "gradient": "from-[#2a353c] to-[#121619]",
+    "offset": false
+  },
+  {
+    "id": "tool-002",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg",
+    "featured": true,
+    "gradient": "from-black to-gray-900",
+    "offset": true
+  },
+  {
+    "id": "tool-003",
+    "image": "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg",
+    "featured": true,
+    "gradient": "from-blue-900/20 to-purple-900/20",
+    "offset": false
+  },
+  {
+    "id": "tool-004",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
+    "featured": true,
+    "gradient": "from-gray-800 to-black",
+    "offset": true
+  },
+  {
+    "id": "tool-005",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg",
+    "featured": true,
+    "gradient": "from-gray-800 to-black",
+    "offset": true
+  },
+  {
+    "id": "tool-006",
+    "image": "https://nodejs.org/static/images/logo.svg",
+    "featured": true,
+    "gradient": "from-[#2a353c] to-[#121619]",
+    "offset": false
+  },
+  {
+    "id": "tool-007",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "featured": true,
+    "gradient": "from-black to-gray-900",
+    "offset": true
+  },
+  {
+    "id": "tool-008",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg",
+    "featured": true,
+    "gradient": "from-blue-900/20 to-purple-900/20",
+    "offset": false
+  },
+  {
+    "id": "tool-009",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg",
+    "featured": true,
+    "gradient": "from-gray-800 to-black",
+    "offset": true
+  }
+]
+

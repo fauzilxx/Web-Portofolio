@@ -26,16 +26,23 @@ class ExportStatic extends Command
         $this->info('Exporting home page...');
         $html = $this->fetchRoute('/');
         
-        // Fix asset paths for root deployment
-        $html = str_replace('href="/build/', 'href="build/', $html);
-        $html = str_replace('src="/build/', 'src="build/', $html);
-        $html = str_replace('href="/css/', 'href="css/', $html);
-        $html = str_replace('src="/js/', 'src="js/', $html);
-        $html = str_replace('src="/images/', 'src="images/', $html);
+        // Fix all asset paths - remove leading slash for relative paths
+        $html = preg_replace('/href="\/([^"]+)"/', 'href="$1"', $html);
+        $html = preg_replace('/src="\/([^"]+)"/', 'src="$1"', $html);
+        
+        // Keep external URLs intact
+        $html = str_replace('href="https:', 'href="/https:', $html);
+        $html = str_replace('src="https:', 'src="/https:', $html);
+        $html = str_replace('href="http:', 'href="/http:', $html);
+        $html = str_replace('src="http:', 'src="/http:', $html);
+        $html = str_replace('href="/https:', 'href="https:', $html);
+        $html = str_replace('src="/https:', 'src="https:', $html);
+        $html = str_replace('href="/http:', 'href="http:', $html);
+        $html = str_replace('src="/http:', 'src="http:', $html);
         
         File::put($exportPath . '/index.html', $html);
         
-        // Copy assets
+        // Copy all assets
         $this->info('Copying assets...');
         
         $assetDirs = ['build', 'css', 'js', 'images'];
@@ -45,7 +52,18 @@ class ExportStatic extends Command
             
             if (File::exists($source)) {
                 File::copyDirectory($source, $dest);
+                $this->info("✓ Copied {$dir}/");
             }
+        }
+        
+        // Copy data directory (JSON files)
+        $this->info('Copying data files...');
+        $dataSource = resource_path('data');
+        $dataDest = $exportPath . '/data';
+        
+        if (File::exists($dataSource)) {
+            File::copyDirectory($dataSource, $dataDest);
+            $this->info('✓ Copied data/');
         }
         
         // Copy robots.txt if exists
