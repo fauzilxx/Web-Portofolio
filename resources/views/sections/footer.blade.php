@@ -4,7 +4,7 @@
         <h2 class="text-4xl sm:text-5xl md:text-7xl font-serif text-white mb-4">Let's build something</h2>
         <h2 class="text-4xl sm:text-5xl md:text-7xl font-serif text-[#32BAD6] italic mb-12">remarkable.</h2>
         
-        <a href="mailto:fauzilazhim85@gmail.com" class="inline-block px-10 py-4 bg-white text-[#0A1014] font-bold rounded-full hover:bg-gray-200 transition duration-300">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=fauzilazhim85@gmail.com" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 bg-white text-[#0A1014] font-bold rounded-full hover:bg-gray-200 transition duration-300">
             Start a Conversation
         </a>
         
