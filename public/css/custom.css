@@ -1,6 +1,11 @@
 .font-serif { font-family: 'Playfair Display', serif; }
 .font-sans { font-family: 'Instrument Sans', sans-serif; }
 
+/* Navbar Active State */
+.nav-link {
+    transition: color 0.3s ease;
+}
+
 /* Custom Animation Keyframes */
 @keyframes spinSplitLeft {
     0% { opacity: 0; transform: translateX(100%) rotate(180deg) scale(0.1); filter: blur(20px); }

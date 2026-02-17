@@ -549,4 +549,98 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[data-decrypt]').forEach(element => {
         new DecryptedText(element);
     });
+
+    // ============================================
+    // Navbar Scroll Spy
+    // ============================================
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Map section IDs to their corresponding elements
+    const sectionMap = new Map();
+    sections.forEach(section => {
+        sectionMap.set(section.id, section);
+    });
+    
+    // Track which sections are currently visible
+    const visibleSections = new Set();
+    
+    function updateActiveNav() {
+        // Clear all active states
+        navLinks.forEach(link => {
+            link.classList.remove('text-white');
+            link.classList.add('text-gray-400');
+        });
+        
+        // Determine which section to highlight
+        let activeSection = null;
+        
+        if (visibleSections.size > 0) {
+            // Get the first visible section from top
+            const sectionsArray = Array.from(sections);
+            for (const section of sectionsArray) {
+                if (visibleSections.has(section.id)) {
+                    activeSection = section.id;
+                    break;
+                }
+            }
+        }
+        
+        // If no section is visible (e.g., at very top), default to home
+        if (!activeSection && window.scrollY < 100) {
+            activeSection = 'home';
+        }
+        
+        // Activate the corresponding nav link
+        if (activeSection) {
+            const activeLink = document.querySelector(`.nav-link[data-section="${activeSection}"]`);
+            if (activeLink) {
+                activeLink.classList.remove('text-gray-400');
+                activeLink.classList.add('text-white');
+            }
+        }
+    }
+    
+    // Create an IntersectionObserver for scroll spy
+    const scrollSpyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleSections.add(entry.target.id);
+            } else {
+                visibleSections.delete(entry.target.id);
+            }
+        });
+        
+        updateActiveNav();
+    }, {
+        threshold: [0, 0.1, 0.5],
+        rootMargin: '-100px 0px -50% 0px'
+    });
+    
+    // Observe all sections
+    sections.forEach(section => {
+        if (section.id) {
+            scrollSpyObserver.observe(section);
+        }
+    });
+    
+    // Initial update
+    updateActiveNav();
+    
+    // Smooth scroll when clicking nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-section');
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 });
