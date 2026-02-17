@@ -17,6 +17,45 @@ document.addEventListener('DOMContentLoaded', function() {
         projectObserver.observe(card);
     });
 
+    // Experience Slide Animation - Always trigger on scroll
+    const experienceSection = document.querySelector('.experience-slide');
+    
+    if (experienceSection) {
+        const experienceObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    // Remove class when out of view so it can re-trigger
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        experienceObserver.observe(experienceSection);
+    }
+
+    // Footer Fade Animation
+    const footerElements = document.querySelectorAll('.footer-fade');
+    
+    const footerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    footerElements.forEach(element => {
+        footerObserver.observe(element);
+    });
+
     // Tech Stack Scroll
     const container = document.getElementById('tech-scroll-container');
     const track = document.getElementById('tech-track');

@@ -110,3 +110,27 @@ p[data-decrypt] {
     opacity: 1;
     transform: translateX(0);
 }
+
+/* Footer Fade Animation */
+.footer-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Experience Slide Animation */
+.experience-slide {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.experience-slide.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
