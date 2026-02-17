@@ -19,7 +19,7 @@
                     @endphp
                     
                     @if($imageExists)
-                        <img src="{{ asset($imagePath) }}" 
+                        <img src="{{ $imagePath }}" 
                              alt="{{ $project['title'] }}" 
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                              loading="lazy">

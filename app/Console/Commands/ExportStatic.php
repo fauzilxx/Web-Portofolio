@@ -22,9 +22,29 @@ class ExportStatic extends Command
         }
         File::makeDirectory($exportPath, 0755, true);
         
+        // Set APP_URL for relative paths
+        putenv('APP_URL=');
+        config(['app.url' => '']);
+        
         // Export home page
         $this->info('Exporting home page...');
-        $html = $this->fetchRoute('/');
+        
+        // Manually call route
+        $projectsPath = resource_path('data/projects.json');
+        $allData = file_exists($projectsPath)
+            ? json_decode(file_get_contents($projectsPath), true)
+            : [];
+        
+        $projects = array_filter($allData, fn($item) => str_starts_with($item['id'], 'proj-'));
+        $tools = array_filter($allData, fn($item) => str_starts_with($item['id'], 'tool-'));
+        
+        $html = view('home', [
+            'projects' => $projects,
+            'tools' => $tools
+        ])->render();
+        
+        // Remove cache busting timestamps
+        $html = preg_replace('/\?v=\d+/', '', $html);
         
         File::put($exportPath . '/index.html', $html);
         
@@ -39,17 +59,9 @@ class ExportStatic extends Command
             if (File::exists($source)) {
                 File::copyDirectory($source, $dest);
                 $this->info("✓ Copied {$dir}/");
+            } else {
+                $this->warn("✗ Directory not found: {$dir}/");
             }
-        }
-        
-        // Copy data directory (JSON files)
-        $this->info('Copying data files...');
-        $dataSource = resource_path('data');
-        $dataDest = $exportPath . '/data';
-        
-        if (File::exists($dataSource)) {
-            File::copyDirectory($dataSource, $dataDest);
-            $this->info('✓ Copied data/');
         }
         
         // Copy robots.txt if exists
@@ -58,24 +70,11 @@ class ExportStatic extends Command
         }
         
         $this->info('✅ Static export completed at: ' . $exportPath);
+        $this->info('');
+        $this->info('Next steps:');
+        $this->info('1. Test: Open public/dist/index.html in browser');
+        $this->info('2. Deploy: git add public/dist && git commit -m "Update static export" && git push');
         
         return 0;
-    }
-    
-    private function fetchRoute($path)
-    {
-        // Set APP_URL to empty string for relative paths
-        config(['app.url' => '']);
-        
-        $app = app();
-        $request = \Illuminate\Http\Request::create($path, 'GET');
-        $response = $app->handle($request);
-        
-        $html = $response->getContent();
-        
-        // Replace any remaining localhost references with relative paths
-        $html = preg_replace('#http://localhost/([^"\']+)#', '$1', $html);
-        
-        return $html;
     }
 }

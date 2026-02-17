@@ -6,14 +6,14 @@
     <title>@yield('title', "Fauzil's Portfolio")</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/Picture_Profile.png') }}">
+    <link rel="icon" type="image/png" href="images/Picture_Profile.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="css/custom.css">
     
     @stack('styles')
 </head>
@@ -22,7 +22,7 @@
     @yield('content')
 
     <!-- Custom JS with cache busting -->
-    <script src="{{ asset('js/custom.js') }}?v={{ time() }}"></script>
+    <script src="js/custom.js"></script>
     
     @stack('scripts')
 </body>
